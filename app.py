@@ -59,8 +59,8 @@ if st.button("🚀 Iniciar Análisis Completo", type="primary"):
     else:
         st.info(f"Consultando partidos y cuotas para la fecha {fecha_sel}...")
         
-        # URL y headers actualizados para la API gratuita correcta
-        url = f"https://free-api-live-football-data.p.rapidapi.com/football-odds?date={fecha_sel}"
+        # URL corregida para evitar el Error 404
+        url = f"https://free-api-live-football-data.p.rapidapi.com/matches?date={fecha_sel}"
         headers = {
             "x-rapidapi-key": api_key,
             "x-rapidapi-host": "free-api-live-football-data.p.rapidapi.com"
