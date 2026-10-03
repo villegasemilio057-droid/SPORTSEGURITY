@@ -112,4 +112,4 @@ if st.button("🚀 Iniciar Análisis Completo", type="primary"):
                 st.error(f"Error de conexión con la API (Código: {response.status_code}).")
                 
         except Exception as e:
-            st.error(f"Ocurrió un error inesperado al procesar: {e
+            st.error(f"Ocurrió un error inesperado al procesar: {e}")
