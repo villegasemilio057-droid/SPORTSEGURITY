@@ -6,7 +6,7 @@ import pandas as pd
 st.set_page_config(page_title="Bot Profesional de Apuestas +EV", page_icon="🤖", layout="wide")
 
 st.title("🤖 Bot Profesional: Análisis +EV y Gestión de Capital")
-st.caption("Versión definitiva: Manejo seguro de respuestas de API")
+st.caption("Versión definitiva: Estabilidad y manejo seguro de datos")
 
 # --- PANEL DE CONTROL LATERAL ---
 st.sidebar.header("⚙️ Configuración del Bot")
@@ -66,12 +66,10 @@ if st.button("🚀 Iniciar Análisis Completo", type="primary"):
                 except:
                     data = {}
                 
-                # Blindaje contra respuestas que no sean listas o diccionarios limpios
                 partidos = data.get("response", []) if isinstance(data, dict) else []
                 
                 if not partidos:
-                    st.warning("No hay partidos en juego en este momento, o la estructura devolvió una lista vacía. Mostrando simulación de análisis con datos de prueba:")
-                    # Simulamos un partido para verificar que todo el motor matemático y visual funcione perfectamente
+                    st.warning("No hay partidos en juego en este momento. Ejecutando simulación de control:")
                     partidos = [{"league": "Liga de Prueba - Simulación", "home": "Local", "away": "Visita"}]
 
                 resultados = []
@@ -102,7 +100,7 @@ if st.button("🚀 Iniciar Análisis Completo", type="primary"):
                                     "Ventaja (+EV)": f"+{ev:.1%}",
                                     "Prob. Real": f"{prob_modelo:.1%}",
                                     "💰 INVERTIR": f"${inversion:.2f}"
-                                endregion
+                                })
 
                 if resultados:
                     st.success(f"¡Análisis completado con éxito! Se encontraron {len(resultados)} oportunidades.")
@@ -114,4 +112,4 @@ if st.button("🚀 Iniciar Análisis Completo", type="primary"):
                 st.error(f"Error de conexión con la API (Código: {response.status_code}).")
                 
         except Exception as e:
-            st.error(f"Ocurrió un error inesperado al procesar: {e}")
+            st.error(f"Ocurrió un error inesperado al procesar: {e
