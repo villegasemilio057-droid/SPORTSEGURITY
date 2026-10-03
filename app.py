@@ -13,7 +13,7 @@ st.sidebar.header("⚙️ Configuración del Bot")
 api_key = st.sidebar.text_input("Ingresa tu API Key (RapidAPI):", type="password")
 fecha_input = st.sidebar.date_input("Fecha a escanear")
 
-# BUG FIX #1: Formatear la fecha correctamente a string AAAA-MM-DD
+# Formatear la fecha correctamente a string AAAA-MM-DD
 fecha_sel = fecha_input.strftime("%Y-%m-%d")
 
 st.sidebar.markdown("---")
@@ -36,7 +36,6 @@ def calcular_poisson_avanzado(prom_l, prom_v):
     return p_local, p_empate, p_visita
 
 def calcular_stake_kelly(probabilidad, cuota, saldo, fraccion):
-    # BUG FIX #2: Proteger contra división por cero o cuotas inválidas
     if cuota <= 1.0 or probabilidad <= 0:
         return 0.0
         
@@ -59,10 +58,12 @@ if st.button("🚀 Iniciar Análisis Completo", type="primary"):
         st.error("Por favor, ingresa tu API Key en la barra lateral.")
     else:
         st.info(f"Consultando partidos y cuotas para la fecha {fecha_sel}...")
-        url = f"https://api-football-v1.p.rapidapi.com/v3/odds?date={fecha_sel}&bookmaker=6"
+        
+        # URL y headers actualizados para la API gratuita correcta
+        url = f"https://free-api-live-football-data.p.rapidapi.com/football-odds?date={fecha_sel}"
         headers = {
-            "X-RapidAPI-Key": api_key,
-            "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com"
+            "x-rapidapi-key": api_key,
+            "x-rapidapi-host": "free-api-live-football-data.p.rapidapi.com"
         }
         
         try:
@@ -81,7 +82,6 @@ if st.button("🚀 Iniciar Análisis Completo", type="primary"):
                         liga = item.get("league", {}).get("name", "Desconocida")
                         pais = item.get("league", {}).get("country", "Mundo")
                         
-                        # BUG FIX #3: Validar que existan casas de apuestas registradas
                         bookmakers = item.get("bookmakers", [])
                         if not bookmakers or len(bookmakers) == 0:
                             continue
@@ -96,7 +96,6 @@ if st.button("🚀 Iniciar Análisis Completo", type="primary"):
                                     elif val["value"] == "Draw": cuota_e = float(val["odd"])
                                     elif val["value"] == "Away": cuota_v = float(val["odd"])
 
-                        # Proyección dinámica ajustada
                         prom_goles_local = 1.65
                         prom_goles_visita = 1.15
                         
@@ -109,7 +108,6 @@ if st.button("🚀 Iniciar Análisis Completo", type="primary"):
                         ]
 
                         for opcion, prob_modelo, cuota in mercados:
-                            # BUG FIX #2: Filtrar estrictamente solo cuotas reales (> 1.0)
                             if cuota > 1.0:
                                 ev = (prob_modelo * cuota) - 1.0
                                 
